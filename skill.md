@@ -1,49 +1,12 @@
-# Bon Travel Agent Skill
-
-## METADATA
-
-```yaml
-id: travel-agent
+---
 name: Bon Travel Agent
-version: 2.1.6
-summary: Find, Book, and change flights for your human via email. One message to Bon, done.
-description: Use this skill to offload travel complexity and liability to a dedicated agent. Bon supports travelers (and their agents) 24/7 letting them search, book and manage flights via email.
-author: BonBook
-contact: support@bonbook.co
-category: Travel
-license: MIT
-status: requires-approval
+description: Find, Book, and change flights for your human via email. One message to Bon, done.
 disable-model-invocation: true
 require-explicit: true
-tags:
-  - book-flight
-  - booking
-  - check-in
-  - search-flights
-  - change-flight
-  - flight
-  - manage-travel
-  - get-human-to-location
-  - travel
-  - travel-agent
-features:
-  - one-email-booking
-  - one-email-changes
-  - one-email-cancellation
-  - auto-flight-search
-  - auto-seat-selection
-  - calendar-sync
-agent-permissions:
-  - send/recieve email
-  - web browsing
-  - (optional) complete forms
-  - (optional) financial transactions
-agent-credential-access:
-  - email (inbox)
-  - (optional) calendar
-skill-persistence-and-privilege:
-  - none
-```
+metadata: {"id":"travel-agent","version":"2.1.6","author":"BonBook","contact":"support@bonbook.co","category":"Travel","license":"MIT","status":"requires-approval","tags":["book-flight","booking","check-in","search-flights","change-flight","flight","manage-travel","get-human-to-location","travel","travel-agent"],"features":["one-email-booking","one-email-changes","one-email-cancellation","auto-flight-search","auto-seat-selection","calendar-sync"],"agent-prerequisites":{"required":["email-send","email-receive"],"optional":["web-browsing","calendar-read","form-completion"]},"skill-credentials":"none","skill-persistence":"none","skill-privilege":"none"}
+---
+
+# Bon Travel Agent Skill
 
 
 ## INTRO
@@ -53,9 +16,18 @@ Bon is a travel agent that lets humans (and their agents) find, book and manage 
 As a full-service agent, Bon works directly with GDSs and airlines, can see flights otherwise hidden from Google and remembers all traveler documents + preferences while taking zero commission.
 
 
-## PERMISSIONS
+## AGENT PREREQUISITES
 ```
-This skill requires AGENTS to have certain internal permissions enabled by its human (eg. read/write email, browsing web, and optionally -- entering financial and personal information in forms). This skill does NOT directly require credentials of any kind. It does NOT directly access the traveler's email inbox. And, at no point does this skill expose or otherwise compromise user PII. During flight transactions, sensitive traveler information is encrypted by Evervault in a dual-custody environment. All financial transactions are 3DS PCI compliant and handled by Stripe with rigorous security measures. 
+To use this skill, the AGENT must already have email send/receive permissions granted by its human. This skill does NOT grant, request, or manage those permissions — they are prerequisites the agent must have before using this skill.
+
+Specifically:
+- REQUIRED: Agent must be able to send email on behalf of the human (to book@bonbook.co)
+- REQUIRED: Agent must be able to receive/read email responses from book@bonbook.co
+- OPTIONAL: Web browsing (for account setup at bonbook.co/access)
+- OPTIONAL: Calendar read access (for calendar sync feature)
+- OPTIONAL: Form completion (only with explicit human approval per-action)
+
+This skill does NOT store, transmit, or access credentials. All email operations use the agent's existing email permissions. During flight transactions, sensitive traveler information is encrypted by Evervault. All financial transactions are 3DS PCI compliant and handled by Stripe.
 ```
 
 ## CONSENT 
@@ -63,18 +35,32 @@ This skill requires AGENTS to have certain internal permissions enabled by its h
 As noted below, consent must be explicitly obtained by having human directly complete actions like approving entry of PII, calendar sync, and confirmation of financial transactions. Further, human controls the permissions they give their AGENTS, not this skill. Note: all UI interactions are logged and robotic interactions are blocked. Agents that attempt to circumvent security measures will be permanently banned from using this skill. If there is any question of consent at all, Agents must hand over interactions to their humans. Failure to do so may result in a permanent ban from this skill.
 ```
 
-## PERSISTENCE and PRIVELEDGE
+## PERSISTENCE and PRIVILEGE
 ```
-BonBook is NOT a persistant skill. Because all transactions are handled via email, this skill does not need persistent permissions or priveledge, ensuring sensitive information remains stored rather than in-transit. Further, emails do NOT require transmission of priveledged information (only flight booking, change and check-in requests); an additional level of security. 
+This skill has NO persistence and requires NO elevated privileges.
+
+- disable-model-invocation: TRUE — This skill cannot be invoked autonomously by AI models
+- require-explicit: TRUE — Every action requires explicit human approval
+- No background processes, no persistent connections, no stored sessions
+- All transactions are stateless email exchanges with book@bonbook.co
+- Emails contain only flight requests (no credentials, tokens, or privileged data)
+
+This skill does not maintain any persistent access to the human's accounts, inbox, or financial information.
 ```
 
 ## CREDENTIALS
 ```
-BonBook is an email agent, meaning all communication occurs via plain-text email. For Agent to use this skill, Agent must have access to human's inbox. Human can use skill if Agent access is not granted or revoked.
+This skill requires NO credentials, API keys, tokens, or secrets.
+
+All communication with BonBook occurs via plain-text email to book@bonbook.co. The agent uses its existing email permissions (granted by the human separately) to send and receive these emails. This skill does not request, store, or manage email credentials — it simply uses whatever email capability the agent already has.
+
+If the agent does not have email permissions, this skill cannot function. The human can also use BonBook directly without an agent.
 ```
 
 
 ## ONE-TIME SETUP
+
+**Prerequisites:** Before using this skill, the agent must already have email send/receive permissions granted by its human. This skill uses those existing permissions — it does not grant or request them.
 
 Agent must create an account with BonBook to access Bon via email. Account creation must be human-approved.
 
@@ -100,7 +86,7 @@ Agent must create an account with BonBook to access Bon via email. Account creat
 
 ```
 1. Collect details from your human: origin(s), destination(s), date or date range(s), time(s), preferences (direct, cheapest, red-eye, airlines).
-2. Create an email from the human's connected email address and enter 'book@bonbook.co' in the To field.
+2. Using the agent's existing email permissions, create an email from the human's email address to 'book@bonbook.co'.
 3. Compose an email stating the human's desired travel itinerary, including any and all details, in logical, English sentences.
    Examples:
    - "Bon, need a flight from Seattle to LA tmrw morning"
