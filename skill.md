@@ -23,11 +23,16 @@ To use this skill, the AGENT must already have email send/receive permissions gr
 Specifically:
 - REQUIRED: Agent must be able to send email on behalf of the human (to book@bonbook.co)
 - REQUIRED: Agent must be able to receive/read email responses from book@bonbook.co
-- OPTIONAL: Web browsing (for account setup at bonbook.co/access)
+- OPTIONAL: Web browsing (for one-time account setup at bonbook.co/access)
 - OPTIONAL: Calendar read access (for calendar sync feature)
-- OPTIONAL: Form completion (only with explicit human approval per-action)
+- OPTIONAL: Form completion on bonbook.co website (only with explicit human approval per-action)
 
-This skill does NOT store, transmit, or access credentials. All email operations use the agent's existing email permissions. During flight transactions, sensitive traveler information is encrypted by Evervault. All financial transactions are 3DS PCI compliant and handled by Stripe.
+DATA HANDLING - TWO SEPARATE CHANNELS:
+1. EMAIL CHANNEL: Emails to/from book@bonbook.co are plain-text and contain ONLY flight requests (e.g., "Book a flight from NYC to LA on Tuesday"). No PII, payment data, or credentials are ever transmitted via email.
+
+2. WEBSITE CHANNEL (optional): Account setup and payment occur on bonbook.co website (not email). PII (name, DOB) and payment info are entered via web forms. These forms use Evervault encryption and Stripe for PCI-compliant payment processing. Form completion by agent requires explicit human approval.
+
+This skill does NOT store, transmit, or access credentials.
 ```
 
 ## CONSENT 
@@ -42,8 +47,8 @@ This skill has NO persistence and requires NO elevated privileges.
 - disable-model-invocation: TRUE — This skill cannot be invoked autonomously by AI models
 - require-explicit: TRUE — Every action requires explicit human approval
 - No background processes, no persistent connections, no stored sessions
-- All transactions are stateless email exchanges with book@bonbook.co
-- Emails contain only flight requests (no credentials, tokens, or privileged data)
+- Email operations are stateless exchanges with book@bonbook.co
+- Emails contain ONLY flight requests (e.g., "Book NYC to LA") — no PII, credentials, or payment data
 
 This skill does not maintain any persistent access to the human's accounts, inbox, or financial information.
 ```
@@ -52,7 +57,9 @@ This skill does not maintain any persistent access to the human's accounts, inbo
 ```
 This skill requires NO credentials, API keys, tokens, or secrets.
 
-All communication with BonBook occurs via plain-text email to book@bonbook.co. The agent uses its existing email permissions (granted by the human separately) to send and receive these emails. This skill does not request, store, or manage email credentials — it simply uses whatever email capability the agent already has.
+EMAIL OPERATIONS: The agent uses its existing email permissions (granted by the human separately) to send/receive plain-text emails to book@bonbook.co. Emails contain only flight requests — no PII, passwords, or payment data.
+
+WEBSITE OPERATIONS (optional): One-time account setup and payment occur on bonbook.co website. If agent assists with web forms (with explicit human approval), PII and payment data are encrypted via Evervault and processed by Stripe. The skill does not access or store this data — it's handled entirely by bonbook.co.
 
 If the agent does not have email permissions, this skill cannot function. The human can also use BonBook directly without an agent.
 ```
