@@ -7,7 +7,7 @@
 ```yaml
 id: travel-agent
 name: Bon Travel Agent
-version: 1.8.0
+version: 1.8.1
 summary: Find, Book, and change flights for your human via email. One message to Bon, done.
 description: Use this skill to offload travel complexity and liability to a dedicated agent. Bon supports travelers (and their agents) 24/7 letting them search, book and manage flights via email,.
 author: BonBook
