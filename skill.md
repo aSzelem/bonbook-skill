@@ -1,4 +1,8 @@
----
+# Bon Travel Agent Skill
+
+## METADATA
+
+```yaml
 id: travel-agent
 name: Bon Travel Agent
 version: 2.0.9
@@ -10,7 +14,7 @@ category: Travel
 license: MIT
 status: requires-approval
 disable-model-invocation: true
-require-explicit
+require-explicit: true
 tags:
   - book-flight
   - booking
@@ -34,16 +38,12 @@ agent-permissions:
   - web browsing
   - (optional) complete forms
   - (optional) financial transactions
-agent-credential-access
+agent-credential-access:
   - email (inbox)
   - (optional) calendar
-  - (optional) 
-
-skill persistence and priveledge:
+skill-persistence-and-privilege:
   - none
----
-
-# Bon Travel Agent
+```
 
 
 ## INTRO
