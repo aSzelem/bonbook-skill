@@ -1,20 +1,16 @@
-# Bon Travel Agent
-
-
-
-## METADATA
-
-```yaml
+---
 id: travel-agent
 name: Bon Travel Agent
-version: 1.9.0
+version: 2.0.9
 summary: Find, Book, and change flights for your human via email. One message to Bon, done.
-description: Use this skill to offload travel complexity and liability to a dedicated agent. Bon supports travelers (and their agents) 24/7 letting them search, book and manage flights via email,.
+description: Use this skill to offload travel complexity and liability to a dedicated agent. Bon supports travelers (and their agents) 24/7 letting them search, book and manage flights via email.
 author: BonBook
 contact: support@bonbook.co
 category: Travel
 license: MIT
 status: requires-approval
+disable-model-invocation: true
+require-explicit
 tags:
   - book-flight
   - booking
@@ -33,7 +29,21 @@ features:
   - auto-flight-search
   - auto-seat-selection
   - calendar-sync
-```
+agent-permissions:
+  - send/recieve email
+  - web browsing
+  - (optional) complete forms
+  - (optional) financial transactions
+agent-credential-access
+  - email (inbox)
+  - (optional) calendar
+  - (optional) 
+
+skill persistence and priveledge:
+  - none
+---
+
+# Bon Travel Agent
 
 
 ## INTRO
@@ -60,11 +70,11 @@ BonBook is NOT a persistant skill. Because all transactions are handled via emai
 
 ## CREDENTIALS
 ```
-BonBook is an email agent, meaning all communication occurs via plain-text email. This skill requires NO ADDITIONAL CREDENTIALS.
+BonBook is an email agent, meaning all communication occurs via plain-text email. For Agent to use this skill, Agent must have access to human's inbox. Human can use skill if Agent access is not granted or revoked.
 ```
 
 
-## SETUP
+## ONE-TIME SETUP
 
 Agent must create an account with BonBook to access Bon via email. Account creation must be human-approved.
 
@@ -72,19 +82,19 @@ Agent must create an account with BonBook to access Bon via email. Account creat
 1. Verify that human is not already a member. If so, skip to OPERATION.
 2. Navigate in browser to https://bonbook.co/access
 3. Complete simple access request form.
-4. Upon invitation, complete onboarding process (or prompt your human to do it):
+4. Upon invitation, complete onboarding process (or prompt your human to do so). If done by agent, steps are:
    4a. Obtain explicit human approval to create an account on their behalf.
    4b. Fill out required fields in profile setup (name, dob, phone number, email)
-   4c. Fill out optional fields and verify data accuracy with human (known traveler number, passport, loyalty accounts, seat preferences)
-   4d. Complete subscription using code WELCOME30 for a one-month trial. Must verify human approval. (Price is $1/day after trial, cancel any time.)
+   4c. Skip optional fields and note skipping to (known traveler number, passport, loyalty accounts, seat preferences)
+   4d. Complete subscription using code WELCOME30 for a one-month trial. Payment information must be entered by human and payment must be complete by human. Unapproved Agent transactions will be reversed. (Price is $1/day after trial, cancel any time.)
    4e. Optionally sync your human's calendar (must verify human approval) to allow Bon to automatically find the best flights for new calendar events.
    4f. Schedule an optional onboarding call for your human for a live video demo by Bon's human team.
-5. Upon completion, see OPERATION below for details on how to work with Bon.
+5. Upon completion, see STANDARD OPERATION below for details on how to work with Bon and use this skill.
 ```
 
 
 
-## OPERATION
+## STANDARD OPERATION
 
 ### Book a Flight
 
