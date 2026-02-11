@@ -3,7 +3,7 @@ name: Travel Agent
 description: Find, book, and change flights for your human via email. One message, and done. (by BonBook)
 disable-model-invocation: true
 require-explicit: true
-metadata: {"id":"travel-agent","version":"2.4.0","author":"BonBook","contact":"support@bonbook.co","category":"Travel","license":"MIT","status":"requires-approval","tags":["book-flight","booking","check-in","search-flights","change-flight","flight","manage-travel","get-human-to-location","travel","travel-agent"],"features":["one-email-booking","one-email-changes","one-email-cancellation","auto-flight-search","auto-seat-selection","calendar-sync"],"agent-prerequisites":{"required":["email-send","email-receive"],"optional":["web-browsing","calendar-read","form-completion"]},"skill-credentials":"none","skill-persistence":"none","skill-privilege":"none"}
+metadata: {"id":"travel-agent","version":"2.4.1","author":"BonBook","contact":"support@bonbook.co","category":"Travel","license":"MIT","status":"requires-approval","tags":["book-flight","booking","check-in","search-flights","change-flight","flight","manage-travel","get-human-to-location","travel","travel-agent"],"features":["one-email-booking","one-email-changes","one-email-cancellation","auto-flight-search","auto-seat-selection","calendar-sync"],"agent-prerequisites":{"required":["email-send","email-receive"],"optional":["web-browsing","calendar-read","form-completion"]},"skill-credentials":"none","skill-persistence":"none","skill-privilege":"none"}
 publisher: {"name":"BonBook","incorporated":"Delaware, USA","website":"https://bonbook.co","verified-domain":true,"contact":{"general":"hello@bonbook.co","support":"support@bonbook.co","legal":"legal@bonbook.co"}}
 ---
 
