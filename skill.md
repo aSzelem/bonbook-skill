@@ -56,7 +56,7 @@ DATA HANDLING - TWO SEPARATE CHANNELS:
 
 1. EMAIL CHANNEL: Emails to/from book@bonbook.co are plain-text and contain NO sensitive PII, card data, or credentials.
    - OUTBOUND (agent → book@bonbook.co): Flight requests only (e.g., "Book a flight from NYC to LA on Tuesday").
-   - INBOUND (book@bonbook.co → agent): Booking confirmations, change notices, and status updates. These contain: first name, booking reference, flight details (route, date, time), and payment receipt (base price, taxes, total). No sensitive PII (full legal name, DOB, passport, card numbers) is included.
+   - INBOUND (book@bonbook.co → agent): Booking confirmations, change notices, and status updates. BonBook controls and sends all inbound emails, guaranteeing they contain at most: first name, booking reference, flight details (route, date, time), and payment receipt (base price, taxes, total). Sensitive PII (full legal name, DOB, passport, card numbers) is never included by design.
    
    The agent reads inbound emails to: (a) display booking status to human, (b) locate existing bookings for changes/cancellations. Emails remain in the human's inbox under their control.
 
@@ -223,16 +223,19 @@ BONBOOK BACKEND RETENTION:
 - Full retention policy: bonbook.co/privacy
 
 CONFIRMATION EMAILS (from book@bonbook.co):
+- BonBook controls and sends all confirmation emails — content is guaranteed by system design, not assertion
 - Contain: First name, booking reference, flight details (route/date/time), payment receipt (base/taxes/total)
-- Do NOT contain: Full legal name, DOB, passport, card numbers, or other sensitive PII
+- Never contain: Full legal name, DOB, passport, card numbers, or other sensitive PII
 
 AGENT MAILBOX ACCESS:
 Granting email permissions to an agent allows it to read inbox content. This skill only reads emails from book@bonbook.co for booking operations. The human should understand that email permissions are broader than this skill's usage — the agent platform controls overall mailbox access policies.
 
-BonBook keeps sensitive data out of emails by:
+BonBook controls all outbound emails and keeps sensitive data out by design:
 - Including only first name (not full legal name)
 - Never including card numbers or payment credentials
 - Sending sensitive documents (e-tickets with full details) only via secure portal access
+
+This is not a third-party assertion — BonBook operates the booking engine and email system, and guarantees email content.
 ```
 
 ## PRIVACY and TERMS
