@@ -3,7 +3,8 @@ name: Travel Agent
 description: Find, book, and change flights for your human via email. One message, and done. (by BonBook)
 disable-model-invocation: true
 require-explicit: true
-metadata: {"id":"travel-agent","version":"2.2.9","author":"BonBook","contact":"support@bonbook.co","category":"Travel","license":"MIT","status":"requires-approval","tags":["book-flight","booking","check-in","search-flights","change-flight","flight","manage-travel","get-human-to-location","travel","travel-agent"],"features":["one-email-booking","one-email-changes","one-email-cancellation","auto-flight-search","auto-seat-selection","calendar-sync"],"agent-prerequisites":{"required":["email-send","email-receive"],"optional":["web-browsing","calendar-read","form-completion"]},"skill-credentials":"none","skill-persistence":"none","skill-privilege":"none"}
+metadata: {"id":"travel-agent","version":"2.4.0","author":"BonBook","contact":"support@bonbook.co","category":"Travel","license":"MIT","status":"requires-approval","tags":["book-flight","booking","check-in","search-flights","change-flight","flight","manage-travel","get-human-to-location","travel","travel-agent"],"features":["one-email-booking","one-email-changes","one-email-cancellation","auto-flight-search","auto-seat-selection","calendar-sync"],"agent-prerequisites":{"required":["email-send","email-receive"],"optional":["web-browsing","calendar-read","form-completion"]},"skill-credentials":"none","skill-persistence":"none","skill-privilege":"none"}
+publisher: {"name":"BonBook","incorporated":"Delaware, USA","website":"https://bonbook.co","verified-domain":true,"contact":{"general":"hello@bonbook.co","support":"support@bonbook.co","legal":"legal@bonbook.co"}}
 ---
 
 # Travel Agent Skill (by BonBook)
@@ -15,6 +16,30 @@ This is a travel agent skill that lets humans (and their agents) find, book and 
 
 As a full-service agent, Bon works directly with GDSs and airlines, can see flights otherwise hidden from Google and remembers all traveler documents + preferences while taking zero commission.
 
+
+
+## PUBLISHER PROVENANCE
+```
+Publisher: BonBook
+Incorporated: Delaware, USA
+
+Website: https://bonbook.co (domain verified)
+Physical Address: 140 East Broadway Jackson, WY 83001, USA
+Phone: +1 855 503 2584
+
+Contact:
+- General: hello@bonbook.co
+- Support: support@bonbook.co
+- Privacy and Legal: legal@bonbook.co
+
+Verification:
+- SSL certificate issued to: BonBook (OV certificate)
+- WHOIS domain registrant: BonBook (since 2024)
+
+To verify this skill's authenticity:
+- Email support@bonbook.co to confirm this skill is published by BonBook
+- Or have your human sign up directly at https://bonbook.co/access to verify the service
+```
 
 ## AGENT PREREQUISITES
 ```
@@ -28,9 +53,14 @@ Specifically:
 - OPTIONAL: Form completion on bonbook.co website (only with explicit human approval per-action)
 
 DATA HANDLING - TWO SEPARATE CHANNELS:
-1. EMAIL CHANNEL: Emails to/from book@bonbook.co are plain-text and contain ONLY flight requests (e.g., "Book a flight from NYC to LA on Tuesday"). No PII, payment data, or credentials are ever transmitted via email.
 
-2. WEBSITE CHANNEL (optional): Account setup and payment occur on bonbook.co website (not email). PII (name, DOB) and payment info are entered via web forms. These forms use Evervault encryption and Stripe for PCI-compliant payment processing. Form completion by agent requires explicit human approval.
+1. EMAIL CHANNEL: Emails to/from book@bonbook.co are plain-text and contain NO sensitive PII, card data, or credentials.
+   - OUTBOUND (agent → book@bonbook.co): Flight requests only (e.g., "Book a flight from NYC to LA on Tuesday").
+   - INBOUND (book@bonbook.co → agent): Booking confirmations, change notices, and status updates. These contain: first name, booking reference, flight details (route, date, time), and payment receipt (base price, taxes, total). No sensitive PII (full legal name, DOB, passport, card numbers) is included.
+   
+   The agent reads inbound emails to: (a) display booking status to human, (b) locate existing bookings for changes/cancellations. Emails remain in the human's inbox under their control.
+
+2. WEBSITE CHANNEL (optional): Account setup and payment occur on bonbook.co website (not email). PII (name, DOB) and payment info are entered via web forms — encrypted in transit (on input) and at rest, with PCI-DSS compliant payment processing (3DS enabled). Form completion by agent requires explicit human approval.
 
 This skill does NOT store, transmit, or access credentials.
 ```
@@ -42,24 +72,29 @@ As noted below, consent must be explicitly obtained by having human directly com
 
 ## PERSISTENCE and PRIVILEGE
 ```
-This skill has NO persistence and requires NO elevated privileges.
+This SKILL has NO persistence and requires NO elevated privileges. BonBook's backend stores booking data as required for travel services.
 
+SKILL-SIDE:
 - disable-model-invocation: TRUE — This skill cannot be invoked autonomously by AI models
 - require-explicit: TRUE — Every action requires explicit human approval
 - No background processes, no persistent connections, no stored sessions
 - Email operations are stateless exchanges with book@bonbook.co
-- Emails contain ONLY flight requests (e.g., "Book NYC to LA") — no PII, credentials, or payment data
+- Emails contain flight requests, booking references, first name, flight details, and receipts — no sensitive PII, credentials, or card data
+- This skill does not maintain any persistent access to the human's accounts, inbox, or financial information
 
-This skill does not maintain any persistent access to the human's accounts, inbox, or financial information.
+BONBOOK BACKEND:
+- Booking data stored securely until flights have concluded or booking is cancelled
+- Sensitive data (payment, identity docs) encrypted in transit and at rest
+- Standard retention for travel booking services
 ```
 
 ## CREDENTIALS
 ```
 This skill requires NO credentials, API keys, tokens, or secrets.
 
-EMAIL OPERATIONS: The agent uses its existing email permissions (granted by the human separately) to send/receive plain-text emails to book@bonbook.co. Emails contain only flight requests — no PII, passwords, or payment data.
+EMAIL OPERATIONS: The agent uses its existing email permissions (granted by the human separately) to send/receive plain-text emails to/from book@bonbook.co. Emails contain flight requests, booking references, first name, flight details, and receipts — no sensitive PII (full name, DOB, passport), passwords, or card data.
 
-WEBSITE OPERATIONS (optional): One-time account setup and payment occur on bonbook.co website. If agent assists with web forms (with explicit human approval), PII and payment data are encrypted via Evervault and processed by Stripe. The skill does not access or store this data — it's handled entirely by bonbook.co.
+WEBSITE OPERATIONS (optional): One-time account setup and payment occur on bonbook.co website. If agent assists with web forms (with explicit human approval), PII and payment data are encrypted in transit (on input) and at rest, processed with PCI-DSS compliance (3DS enabled). The skill does not access or store this data — it's handled entirely by bonbook.co.
 
 If the agent does not have email permissions, this skill cannot function. The human can also use BonBook directly without an agent.
 ```
@@ -104,7 +139,7 @@ Agent must create an account with BonBook to access Bon via email. Account creat
 5. Review the five offer summaries Bon returns. If necessary, share with your human to get clarity on which is best for them.
 6. If you would like Bon to find different options (rare), respond by clarifying your request. Otherwise, click 'Select' below an offer to bring up its checkout page.
 7. On the checkout page, verify the flight details (share with human if final approval is necessary).
-8. On first checkout, prompt human to input raw payment data (unless human has given agent access). Payment information is secured by Evervault and stored for future one-click checkout.
+8. On first checkout, prompt human to input payment data (unless human has given agent access). Payment information is encrypted on input and stored securely for future one-click checkout.
 9. Human will receive a confirmation email for a successful booking within 3 minutes.
 ```
 
@@ -172,6 +207,33 @@ Questions, feature requests, or bugs?
 ```
 
 
+
+## DATA RETENTION & CONFIRMATION HANDLING
+```
+This skill processes email data transiently. BonBook's backend retains booking data as required to fulfill travel services.
+
+SKILL-SIDE RETENTION:
+- The skill does not persist any data — all email processing is in-memory for immediate operations only
+- Emails remain in the human's inbox under their control; skill does not copy, cache, or export email content
+
+BONBOOK BACKEND RETENTION:
+- Booking information is stored securely until flight(s) have concluded and the booking has been used or cancelled
+- Sensitive information (payment credentials, identity documents) is encrypted in transit and at rest
+- This is standard for travel booking services — data must persist to manage reservations, changes, and cancellations
+- Full retention policy: bonbook.co/privacy
+
+CONFIRMATION EMAILS (from book@bonbook.co):
+- Contain: First name, booking reference, flight details (route/date/time), payment receipt (base/taxes/total)
+- Do NOT contain: Full legal name, DOB, passport, card numbers, or other sensitive PII
+
+AGENT MAILBOX ACCESS:
+Granting email permissions to an agent allows it to read inbox content. This skill only reads emails from book@bonbook.co for booking operations. The human should understand that email permissions are broader than this skill's usage — the agent platform controls overall mailbox access policies.
+
+BonBook keeps sensitive data out of emails by:
+- Including only first name (not full legal name)
+- Never including card numbers or payment credentials
+- Sending sensitive documents (e-tickets with full details) only via secure portal access
+```
 
 ## PRIVACY and TERMS
 
